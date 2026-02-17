@@ -61,5 +61,5 @@ sudo usermod -aG docker $USER
 Then log out and back in (or reboot). After that, Docker commands should work without `sudo`.
 
 ## The final output will look like this
-! [Test running on docker start](assets/docker-running.png)
+![Test running on docker start](assets/docker-running.png)
 
