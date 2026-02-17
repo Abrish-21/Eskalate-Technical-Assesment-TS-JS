@@ -1,64 +1,65 @@
-# AI Experts Assignment (JS/TS)
+## Running Tests
 
-This assignment evaluates your ability to:
+### Run tests locally
 
-- set up a small JavaScript/TypeScript project to run reliably (locally + in Docker),
-- pin dependencies for reproducible installs,
-- write focused tests to reproduce a bug,
-- implement a minimal, reviewable fix.
+Make sure Node.js is installed, then:
 
-## What you will do
+```bash
+npm install
+npm test
+```
 
-### 1) Dockerfile (required)
+This installs dependencies from `package.json` and runs the test suite using Vitest.
 
-Create a `Dockerfile` so the project can run the test suite in a non-interactive, CI-style environment.
+---
 
-Requirements:
+## Running Tests with Docker
 
-- Your Docker image must run the test suite by default using npm test.
-- Ensure npm test works in a clean environment (Docker) without manual steps.
-- The build must install dependencies from package.json using npm install.
-- The image must run tests by default (use: `CMD ["npm", "test"]`).
+This project includes a Dockerfile so the tests can run in a clean, reproducible environment.
 
-### 2) Pin dependencies (required)
+### 1. Build the Docker image
 
-- Pin dependency versions in package.json (no ^ / ~; use exact x.y.z).
-- Do not commit lockfiles (package-lock.json, yarn.lock, pnpm-lock.yaml).
+From the project root:
 
-### 3) README updates (required)
+```bash
+docker build -t ai-assignment .
+```
 
-Update this README to include:
+### 2. Run the tests inside Docker
 
-- how to run the tests locally,
-- how to build and run tests with Docker.
+```bash
+docker run --rm ai-assignment
+```
 
-### 4) Find + fix a bug (required)
+The container will automatically execute `npm test` as configured in the Dockerfile.
 
-There is a bug somewhere in this repository.
+---
 
-Your tasks:
+## Docker Permission Notes (Linux)
 
-- Identify the bug through reading code and/or running tests.
-- Write tests that reproduce the bug (tests should fail on the current code).
-- Apply the smallest possible fix to make the tests pass.
-- Keep the change minimal and reviewable (no refactors).
+If you see a permission error like this:
+![Linux Permission](assets/docker-permission.png)
 
-## Constraints
+you have two options:
 
-- Keep changes minimal and reviewable.
-- Do not refactor unrelated code.
-- Do not introduce extra tooling unless required.
-- You may add tests and the smallest code change needed to fix the bug.
+### Quick workaround (use sudo)
 
-### 5) EXPLANATION.md (required)
+```bash
+sudo docker build -t ai-assignment .
+sudo docker run --rm ai-assignment
+```
+![Building docker with sudo](assets/docker-building.png)
 
-Create `EXPLANATION.md` (max 250 words) containing:
+### Recommended long-term fix
 
-- **What was the bug?**
-- **Why did it happen?**
-- **Why does your fix solve it?**
-- **One realistic case / edge case your tests still don’t cover**
+Add your user to the Docker group:
 
-## Submission
+```bash
+sudo usermod -aG docker $USER
+```
 
-- Submit a public GitHub repository URL containing your solution to the Google form link provided.
+Then log out and back in (or reboot). After that, Docker commands should work without `sudo`.
+
+## The final output will look like this
+! [Test running on docker start](assets/docker-running.png)
+
